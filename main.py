@@ -7,9 +7,8 @@ from flask import Flask, request, render_template
 
 app = Flask(__name__, template_folder="templates")
 
-TOKEN = "BxfKdGLS8YkZrwLQcpp4cl3O8SKWhFpXKjA0pW8p66f22c31"
+TOKEN = "SEU_TOKEN_AQUI"
 WEBHOOK_URL = "https://pushinpay-pix-api.onrender.com/webhook"
-SPLIT_ACCOUNT_ID = "9C3AD98C-F00B-4729-BEAC-0A4B70B3A043"
 
 @app.route("/", methods=["GET"])
 def index():
@@ -20,13 +19,7 @@ def gerar_pix():
     valor = float(request.form["valor"])
     payload = {
         "value": valor,
-        "webhook_url": WEBHOOK_URL,
-        "split_rules": [
-            {
-                "value": 50,
-                "account_id": SPLIT_ACCOUNT_ID
-            }
-        ]
+        "webhook_url": WEBHOOK_URL
     }
     headers = {
         "Authorization": f"Bearer {TOKEN}",
