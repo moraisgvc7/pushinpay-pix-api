@@ -3,19 +3,17 @@ import requests
 import qrcode
 import io
 import base64
-from flask import Flask, request, render_template_string
+from flask import Flask, request, render_template
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder="templates")
 
-TOKEN = "SEU_TOKEN_AQUI"
+TOKEN = "BxfKdGLS8YkZrwLQcpp4cl3O8SKWhFpXKjA0pW8p66f22c31"
 WEBHOOK_URL = "https://pushinpay-pix-api.onrender.com/webhook"
 SPLIT_ACCOUNT_ID = "9C3AD98C-F00B-4729-BEAC-0A4B70B3A043"
 
-HTML_TEMPLATE = open("templates/index.html", encoding="utf-8").read()
-
 @app.route("/", methods=["GET"])
 def index():
-    return render_template_string(HTML_TEMPLATE)
+    return render_template("index.html")
 
 @app.route("/gerar", methods=["POST"])
 def gerar_pix():
@@ -43,7 +41,7 @@ def gerar_pix():
     buffered = io.BytesIO()
     qr.save(buffered, format="PNG")
     qr_base64 = base64.b64encode(buffered.getvalue()).decode("utf-8")
-    return render_template_string(HTML_TEMPLATE, emv=emv, qr_image=qr_base64)
+    return render_template("index.html", emv=emv, qr_image=qr_base64)
 
 @app.route("/webhook", methods=["POST"])
 def webhook():
